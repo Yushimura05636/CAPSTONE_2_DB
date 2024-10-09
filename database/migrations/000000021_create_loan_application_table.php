@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('group_id');
             //$table->dateTime('datetime_created'); redundant similar function to timestamps();
             $table->dateTime('datetime_prepared')->nullable();
-            $table->string('document_status_code');
+            $table->unsignedBigInteger('document_status_code');
             //$table->dateTime('datetime_last_updated'); this one also;
             $table->string('loan_application_no');
             $table->decimal('amount_loan', 10, 2);

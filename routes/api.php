@@ -535,5 +535,5 @@ Route::middleware('auth:sanctum')->prefix('LOAN_APPLICATION_COMAKERS')->group(fu
 
 //get customer under this group (EG: Banana, Grapes)
 Route::get('/test/{id}', [CustomerController::class, 'test']);
-
-Route::middleware('auth')->get('/testCustomer', [UserController::class, 'test']);
+//get user who is logged in // authenticated
+Route::middleware('auth:sanctum')->get('/USER_LOGGED', [UserController::class, 'test']);

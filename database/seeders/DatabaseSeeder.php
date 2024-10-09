@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
                 'first_name'=>$faker->name(),
                 //'description'=>$faker->sentence(6),
                 'birthday'=>now(),
-                'civil_status'=>$faker->sentence(6),
+                'civil_status'=>$faker->numberBetween(1,3),
                 'gender_code'=>$faker->numberBetween(1,2),
                 'house_street'=>$faker->address(),
                 'purok_zone'=>$faker->state(),
