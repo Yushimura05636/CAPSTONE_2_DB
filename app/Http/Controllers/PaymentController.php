@@ -8,6 +8,7 @@ use App\Interface\Service\PaymentLineServiceInterface;
 use App\Interface\Service\PaymentScheduleServiceInterface;
 use App\Interface\Service\PaymentServiceInterface;
 use App\Models\Loan_Release;
+use App\Models\Payment_Line;
 use App\Models\Payment_Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -94,13 +95,16 @@ protected function applyPaymentToSchedules($payment, $totalAmountPaid, Request $
 
         $amountDue = $schedule->amount_due - $schedule->amount_paid; // Remaining balance for this schedule
 
+
         // return response()->json([
         //         'data' => $amountDue,
-        //         'request' => $totalAmountPaid,
+        //         'sched' => $schedule->amount_due,
+        //         'pay' => $schedule->amount_paid,
+        //         'request' => $totalAmountPaid, //payment
         //     ], Response::HTTP_INTERNAL_SERVER_ERROR);
 
         if ($totalAmountPaid >= $amountDue) {
-            // Full payment for this schedule
+
             $this->createPaymentLine($payment, $schedule, $amountDue, 'Full payment', $paymentLineService);
             $schedule->update([
                 'amount_paid' => $schedule->amount_paid + $amountDue,
@@ -121,25 +125,46 @@ protected function applyPaymentToSchedules($payment, $totalAmountPaid, Request $
 
 protected function createPaymentLine($payment, $schedule, $amountPaid, $remarks, PaymentLineServiceInterface $paymentLineService)
 {
+
+    $TotalBalance = 0;
+
+    if($schedule->amount_paid <= 0)
+    {
+        $TotalBalance = $schedule->amount_due - $schedule->amount_paid;
+    }
+    else
+    {
+        $TotalBalance = $schedule->amount_due - $schedule->amountPaid;
+    }
+
     $paymentLineData = [
         'payment_id' => $payment->id,
         'payment_schedule_id' => $schedule->id,
-        'balance' => $schedule->amount_due - $schedule->amount_paid,
+        'balance' => $TotalBalance,
         'amount_paid' => $amountPaid,
-        'remarks' => $remarks
+        'remarks' => $remarks,
+
     ];
 
     // return response()->json([
     //             'data' => $paymentLineData,
+    //             'pay' => $schedule->amount_paid,
+    //             'due' => $schedule->amount_due,
+    //             'new Balance if zero' => $TotalBalance,
     //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
 
 
 
     //convert object
-    $paymentLineData = new Request($paymentLineData);
+    //$paymentLineData = new Request($paymentLineData);
 
+    // Insert or update the record as necessary
+    Payment_Line::updateOrCreate(
+        ['payment_id' => $payment->id, 'payment_schedule_id' => $schedule->id, 'balance' => $schedule->amount_due - $schedule->amount_paid, 'amount_paid' => $amountPaid, 'remarks' => $remarks],
+        $paymentLineData
+    );
     // Save payment line
-    $paymentLineService->createPaymentLine($paymentLineData);
+    //$paymentLineService->createPaymentLine($paymentLineData);
 }
 
 
