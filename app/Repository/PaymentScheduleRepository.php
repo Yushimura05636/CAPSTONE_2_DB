@@ -65,4 +65,9 @@ class PaymentScheduleRepository implements PaymentScheduleRepositoryInterface
 
     }
 
+    public function test($customerId)
+    {
+        return Payment_Schedule::where('customer_id', $customerId)->get(); // Example with pagination
+    }
+
 }

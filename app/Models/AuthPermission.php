@@ -28,6 +28,9 @@ class AuthPermission extends Model
 
     private static int $LOAN_APPLICATIONS;
 
+    private static int $LOAN_RELEASE;
+    private static int $PAYMENTS;
+
     //unique
     private static int $BUTTON_AUTHORIZATION;
 
@@ -61,6 +64,9 @@ class AuthPermission extends Model
         self::$BUTTON_AUTHORIZATION = self::getPermissionId('BUTTON_AUTHORIZATIONS', DOCUMENT_MAP::class);
         self::$LOAN_APPLICATIONS = self::getPermissionId('LOAN_APPLICATIONS', Document_Map::class);
         self::$LOAN_APPLICATION_COMAKERS = self::getPermissionId('LOAN_APPLICATION_COMAKERS', Document_Map::class);
+
+        self::$LOAN_RELEASE = self::getPermissionId('LOAN_RELEASE', Document_Map::class);
+        self::$PAYMENTS = self::getPermissionId('PAYMENTS', Document_Map::class);
 
 
         self::$CREATE = self::getPermissionId('CREATE', Document_Permission_Map::class);
@@ -130,6 +136,15 @@ class AuthPermission extends Model
     {
         return self::$PAYMENT_FREQUENCIES;
     }
+
+        public static function LOAN_RELEASE(): int
+        {
+            return self::$LOAN_RELEASE;
+        }
+        public static function PAYMENTS(): int
+        {
+            return self::$PAYMENTS;
+        }    
 
     public static function PERSONALITIES(): int
     {

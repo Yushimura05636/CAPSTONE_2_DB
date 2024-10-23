@@ -106,6 +106,10 @@ class PaymentScheduleController extends Controller
     public function destroy(int $id)
     {
         return $this->paymentScheduleService->deletePaymentSchedule($id);
+    }
 
+    public function test(int $customerid)
+    {
+        return $this->paymentScheduleService->getCustomerbyID($customerid);
     }
 }

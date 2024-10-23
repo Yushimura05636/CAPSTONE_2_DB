@@ -13,4 +13,6 @@ interface PaymentScheduleServiceInterface
     public function updatePaymentSchedule(object $payload, int $id);
 
     public function deletePaymentSchedule(int $id);
+
+    public function getCustomerbyID(int $customerid);
 }

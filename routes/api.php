@@ -14,6 +14,7 @@ use App\Http\Controllers\FeeController;
 use App\Http\Controllers\LoanApplicationCoMakerController;
 use App\Http\Controllers\LoanApplicationController;
 use App\Http\Controllers\LoanCountController;
+use App\Http\Controllers\LoanReleaseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentDurationController;
 use App\Http\Controllers\PaymentFrequencyController;
@@ -54,6 +55,11 @@ $PERSONALITIES = AuthPermission::PERSONALITIES();
 $BUTTON_AUTHORIZATIONS = AuthPermission::BUTTON_AUTHORIZATIONS();
 $LOAN_APPLICATIONS = AuthPermission::LOAN_APPLICATIONS();
 $LOAN_APPLICATION_COMAKERS = AuthPermission::LOAN_APPLICATION_COMAKERS();
+
+
+$LOAN_RELEASE = AuthPermission::LOAN_RELEASE();
+$PAYMENTS = AuthPermission::PAYMENTS();
+
 
 $VIEW = AuthPermission::VIEW_PERM();
 $CREATE = AuthPermission::CREATE_PERM();
@@ -413,6 +419,29 @@ Route::middleware('auth:sanctum')->prefix('PAYMENT_FREQUENCIES')->group(function
     });
 });
 
+
+//loan Release
+Route::middleware('auth:sanctum')->prefix('LOAN_RELEASE')->group(function ()  {
+    Route::get('/', [LoanReleaseController::class, 'index']);
+    Route::get('/NoAUTH', [LoanReleaseController::class, 'index']);
+    Route::get('/NoAUTH/{id}', [LoanReleaseController::class, 'show']);
+    
+    Route::get('/{id}', [LoanReleaseController::class, 'show']);
+    Route::post('/', [LoanReleaseController::class, 'store']);
+    Route::put('/{id}', [LoanReleaseController::class, 'update']);
+    Route::delete('/{id}', [LoanReleaseController::class, 'destroy']);
+    // Empty update route with PATCH
+    Route::patch('/update', function () {
+        return response()->json(['message' => 'Access granted']);
+    });
+    // Empty create route with PATCH
+    Route::patch('/create', function () {
+        return response()->json(['message' => 'Access granted']);
+    });
+});
+
+
+
 // Loan Schedules routes
 Route::middleware('auth:sanctum')->prefix('PAYMENT_SCHEDULES')->group(function () {
     Route::get('/', [PaymentScheduleController::class, 'index']);
@@ -509,7 +538,7 @@ Route::middleware('auth:sanctum')->prefix('LOAN_APPLICATIONS')->group(function (
 
 });
 
-// Loan Application routes
+// Loan Application comaker routes
 Route::middleware('auth:sanctum')->prefix('LOAN_APPLICATION_COMAKERS')->group(function () use ($LOAN_APPLICATION_COMAKERS, $VIEW, $CREATE, $UPDATE, $DELETE) {
     Route::get('/', [LoanApplicationCoMakerController::class, 'index'])->middleware("document_access:$LOAN_APPLICATION_COMAKERS, $VIEW");
     Route::get('/NoAUTH', [LoanApplicationCoMakerController::class, 'index']);
@@ -538,5 +567,8 @@ Route::middleware('auth:sanctum')->prefix('LOAN_APPLICATION_COMAKERS')->group(fu
 
 //get customer under this group (EG: Banana, Grapes)
 Route::get('/test/{id}', [CustomerController::class, 'test']);
+
+Route::get('/loan-test/{id}', [PaymentScheduleController::class, 'test']);
+
 
 Route::middleware('auth')->get('/testCustomer', [UserController::class, 'test']);

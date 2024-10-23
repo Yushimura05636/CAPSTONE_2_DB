@@ -48,4 +48,13 @@ class PaymentScheduleService implements PaymentScheduleServiceInterface
 
     }
 
+    public function getCustomerbyID(int $customerid)
+    {
+        // Get loan releases filtered by customer_id
+        $loanReleases = $this->paymentScheduleRepository->test($customerid);
+        
+        // Return the collection of loan releases as resources
+        return PaymentScheduleResource::collection($loanReleases);
+    }
+
 }

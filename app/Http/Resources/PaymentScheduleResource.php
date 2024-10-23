@@ -16,6 +16,7 @@ class PaymentScheduleResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'customer_id' => $this->customer_id,
             'datetime_created' => $this->datetime_created,
             'family_name' => $this->family_name,
             'first_name' => $this->first_name,

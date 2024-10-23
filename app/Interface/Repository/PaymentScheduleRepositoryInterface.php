@@ -13,4 +13,7 @@ interface PaymentScheduleRepositoryInterface
     public function update(object $payload, int $id);
 
     public function delete(int $id);
+
+    public function test(int $customerid);
+
 }
