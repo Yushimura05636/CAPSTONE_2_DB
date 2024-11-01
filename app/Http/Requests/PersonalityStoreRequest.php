@@ -41,7 +41,7 @@ class PersonalityStoreRequest extends FormRequest
             'city_id'                    => ['required', 'integer'],
             'country_id'                 => ['required', 'integer'],
             'province_id'                => ['required', 'integer'],
-            'credit_status_id'           => ['required', 'integer'],
+            'credit_status_id'           => ['nullable', 'integer'],
             'notes'                      => ['nullable', 'string'],
         ];
     }

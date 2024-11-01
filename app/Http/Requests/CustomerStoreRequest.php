@@ -22,13 +22,13 @@ class CustomerStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'group_id' => ['required', 'integer'],
-            'passbook_no' => ['required', 'integer'],
-            'loan_count' => ['required', 'integer'],
-            'enable_mortuary' => ['required', 'integer'],
-            'mortuary_coverage_start' => ['nullable', 'date'],
-            'motuary_coverage_end' => ['nullable', 'date'],
-            'personality_id' => ['nullable', 'integer'],
+            'group_id' =>                   ['nullable', 'integer'],
+            'passbook_no' =>                ['required', 'integer'],
+            'loan_count' =>                 ['required', 'integer'],
+            'enable_mortuary' =>            ['nullable', 'integer'],
+            'mortuary_coverage_start' =>    ['nullable', 'date'],
+            'motuary_coverage_end' =>       ['nullable', 'date'],
+            'personality_id' =>             ['nullable', 'integer'],
         ];
     }
 }

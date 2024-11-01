@@ -127,6 +127,7 @@ class CustomerPersonalityController extends Controller
             //     'message' => $customer_id,
             // ], Response::HTTP_BAD_REQUEST);
 
+//diria na part<<<<
             // Create customer_requirements
             for ($i = 0; $i < count($requirementDatas); $i++) {
                 $requireData = $requirementDatas[$i];
@@ -146,6 +147,7 @@ class CustomerPersonalityController extends Controller
                 //     'message' => $requireData['id'],
                 // ], Response::HTTP_BAD_REQUEST);
             }
+//>>>>
 
             //create membership payment
 
@@ -445,6 +447,117 @@ class CustomerPersonalityController extends Controller
             DB::rollBack();
             return response()->json([
                 'message' => 'Customer not found.',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+
+        } catch (\Exception $e) {
+            // Rollback transaction on any other exception
+            DB::rollBack();
+            return response()->json([
+                'message' => 'An error occurred while saving data.',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function storeForRegistration(Request $request, CustomerRequirementController $customerRequirementController, CustomerController $customerController, PersonalityController $personalityController)
+    {
+        // Summons the storeRequest from both controllers
+        $customerStoreRequest = new CustomerStoreRequest();
+        $personalityStoreRequest = new PersonalityStoreRequest();
+
+        // Access the customer and personality data
+        $customerData = $request->input('customer');
+        $personalityData = $request->input('personality');
+        $requirementDatas = $request->input('requirements');
+
+        //get the personality status code
+        $personalityStatusId = Personality_Status_Map::where('description', 'Pending')->first()->id;
+
+        //set the personality status code
+        $personalityData['personality_status_code'] = $personalityStatusId;
+
+        // Merge data for validation
+        $datas = array_merge($customerData, $personalityData);
+        $rules = array_merge($customerStoreRequest->rules(), $personalityStoreRequest->rules());
+
+        // Validate data
+        $validate = Validator::make($datas, $rules);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Validation error!',
+                'data' => $datas,
+                'error' => $validate->errors(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
+
+            // First, store the personality
+            $personalityResponse = $personalityController->store(new Request($personalityData));
+
+            // Attempt to find the personality by first name, family name, and middle name
+            $personality = Personality::where('first_name', $personalityData['first_name'])
+                ->where('family_name', $personalityData['family_name'])
+                ->where('middle_name', $personalityData['middle_name'])
+                ->firstOrFail(); // This will throw an exception if not found
+
+            // Get the ID of the found personality
+            $id = $personality->id;
+
+            // Then put the ID to personality_id in customer
+            $customerData['personality_id'] = $id;
+            $customerResponse = $customerController->store(new Request($customerData));
+
+            $customer_id = Customer::where('passbook_no', $customerData['passbook_no'])->first()->id;
+
+            // return response()->json([
+            //     'message' => $customer_id,
+            // ], Response::HTTP_BAD_REQUEST);
+
+//diria na part<<<<
+            // Create customer_requirements
+            // for ($i = 0; $i < count($requirementDatas); $i++) {
+            //     $requireData = $requirementDatas[$i];
+
+            //     $payload = [
+            //         'customer_id' => $customer_id,
+            //         'requirement_id' => $requireData['id'],
+            //         'expiry_date' => $requireData['expiry_date'],
+            //     ];
+
+            //     $payload = new Request($payload);
+
+            //     $customerRequirementController->store($payload);
+
+            //     // // Return the current requirement as part of the response for tracing
+            //     // return response()->json([
+            //     //     'message' => $requireData['id'],
+            //     // ], Response::HTTP_BAD_REQUEST);
+            // }
+//>>>>
+
+            //create membership payment
+
+
+
+            // Commit the transaction
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Both Customer and Personality saved successfully',
+                'customer' => new CustomerResource($customerResponse), // Use resource class
+                'personality' => new PersonalityResource($personalityResponse), // Use resource class
+            ], Response::HTTP_OK);
+
+        } catch (ModelNotFoundException $e) {
+            // Rollback transaction on model not found
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Personality not found.',
                 'error' => $e->getMessage(),
             ], Response::HTTP_NOT_FOUND);
 

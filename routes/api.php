@@ -669,3 +669,12 @@ Route::get('/loan-test/{id}', [PaymentScheduleController::class, 'test']);
 Route::middleware('auth:sanctum')->get('/USER_LOGGED', [UserController::class, 'getUserLogged']);
 
 Route::get('/HOLIDAY-TEST', [HolidayController::class, 'index']);
+
+
+// Libraries routes
+Route::prefix('REGISTER_LIBRARIES')->group(function () {
+    Route::get('/NoAUTH/{modeltype}', [DBLibraryController::class, 'index']);
+    Route::get('/NoAUTH', [LoanCountController::class, 'index']);
+    Route::post('/', [CustomerPersonalityController::class, 'storeForRegistration']);
+
+});

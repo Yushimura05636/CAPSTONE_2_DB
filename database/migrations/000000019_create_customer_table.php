@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('customer', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('group_id'); #foregin key
-            $table->unsignedBigInteger('passbook_no');
+            $table->unsignedBigInteger('group_id')->nullable(); #foregin key
+            $table->unsignedBigInteger('passbook_no'); 
             $table->unsignedBigInteger('loan_count');
-            $table->boolean('enable_mortuary');
+            $table->boolean('enable_mortuary')->nullable();
             $table->dateTime('mortuary_coverage_start')->nullable();
             $table->dateTime('mortuary_coverage_end')->nullable();
             $table->unsignedBigInteger('personality_id'); #foreign key
