@@ -129,9 +129,13 @@ Route::middleware('auth:sanctum')->prefix('USERS')->group(function () use ($USER
 });
 
 // Authentication routes
+Route::post('/loginClient', [AuthController::class, 'clientLogin']);
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/createUser', [UserController::class, 'store'])->middleware('auth:sanctum');
+
+
 
 // Libraries routes
 Route::middleware('auth:sanctum')->prefix('LIBRARIES')->group(function () use ($LIBRARIES, $VIEW, $CREATE, $UPDATE, $DELETE) {

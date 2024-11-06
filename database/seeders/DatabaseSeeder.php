@@ -662,6 +662,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(), // Start date for coverage
             'mortuary_coverage_end' => now()->addYear(), // End date for coverage, one year from now
             'personality_id' => 3, // ID of Lily Carter
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -674,6 +675,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(),
             'mortuary_coverage_end' => now()->addYear(),
             'personality_id' => 4, // ID of Carlos Ramirez
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -686,6 +688,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => null, // No coverage
             'mortuary_coverage_end' => null,
             'personality_id' => 5, // ID of Juan Santos
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -698,6 +701,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(),
             'mortuary_coverage_end' => now()->addYear(),
             'personality_id' => 6, // ID of Mei Lim
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -710,6 +714,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(),
             'mortuary_coverage_end' => now()->addYear(),
             'personality_id' => 7, // ID of another personality
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -722,6 +727,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(),
             'mortuary_coverage_end' => now()->addYear(),
             'personality_id' => 8, // ID of another personality
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -734,6 +740,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(),
             'mortuary_coverage_end' => now()->addYear(),
             'personality_id' => 9, // ID of another personality
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -746,6 +753,7 @@ class DatabaseSeeder extends Seeder
             'mortuary_coverage_start' => now(),
             'mortuary_coverage_end' => now()->addYear(),
             'personality_id' => 10, // ID of another personality
+            'password' => Hash::make('password'), // password
             'created_at' => now(),
             'updated_at' => now(),
         ]);
